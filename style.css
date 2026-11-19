@@ -1,29 +1,183 @@
+/* Epochs Game site. Type: Minor Third scale, weights 400/500/600. Spacing: 4/8pt grid. */
+@font-face {
+  font-family: "Cinzel"; src: url("fonts/Cinzel-Variable.woff2") format("woff2");
+  font-weight: 400 600; font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif"; src: url("fonts/NotoSerif-Regular.woff2") format("woff2");
+  font-weight: 400; font-display: swap;
+}
+
 :root {
-  --bg: #171310;
-  --panel: #221c16;
+  --bg: #14110e;            /* L0 canvas */
+  --surface: #1e1914;       /* L1 cards, bands */
   --text: #ece3d3;
-  --muted: #b9ad99;
-  --gold: #e8b867;
-  --line: #4a3c2a;
+  --text-2: #b9ad99;
+  --accent: #e8b867;        /* the one interactive hue */
+  --accent-hover: #f1c986;
+  --accent-ink: #1c150c;
+  --border: rgba(236, 227, 211, 0.12);
+  --border-strong: rgba(236, 227, 211, 0.24);
+  --edge: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px; --s24: 96px;
+
+  --t-meta: 0.75rem; --t-2: 0.875rem; --t-body: 1rem;
+  --t-h4: 1.2rem; --t-h3: 1.44rem; --t-h2: 1.728rem; --t-h1: 2.488rem; --t-display: 2.986rem;
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-head: "Cinzel", Georgia, "Times New Roman", serif;
+  --w-head: 600;
+  --radius: 16px;
 }
+
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 17px/1.6 Georgia, "Times New Roman", serif;
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 var(--t-body)/1.55 var(--font-body);
 }
-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
-header img { width: 72px; height: 72px; border-radius: 16px; }
-header a { color: inherit; text-decoration: none; }
-h1 { color: var(--gold); font-size: 30px; margin: 0; letter-spacing: 0.04em; }
-h2 { color: var(--gold); font-size: 21px; margin: 32px 0 8px; }
-p, li { color: var(--text); }
-.muted { color: var(--muted); font-size: 15px; }
-a { color: var(--gold); }
-table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 15px; }
-th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
-th { color: var(--muted); font-weight: normal; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; }
-footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: var(--w-head); color: var(--text); margin: 0; }
+h1 { font-size: var(--t-h1); line-height: 1.15; }
+h2 { font-size: var(--t-h2); line-height: 1.2; }
+h3 { font-size: var(--t-h4); line-height: 1.25; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.muted { color: var(--text-2); font-size: var(--t-2); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s6); }
+.prose { max-width: 68ch; }
+
+/* Navbar: wayfinding plus one action. Opaque, no blur. */
+.nav { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--border); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); min-height: 64px; }
+.brand {
+  display: flex; align-items: center; gap: var(--s3); white-space: nowrap;
+  font: var(--w-head) var(--t-h4)/1.25 var(--font-head); color: var(--text); text-decoration: none;
+}
+.brand:hover { color: var(--text); }
+.brand img { width: 32px; height: 32px; border-radius: 8px; }
+.nav-links { display: flex; align-items: center; gap: var(--s6); font-size: var(--t-2); }
+.nav-links a:not(.btn) { color: var(--text-2); text-decoration: none; padding: var(--s3) 0; }
+.nav-links a:not(.btn):hover { color: var(--text); }
+
+/* Buttons: solid accent, no gradient, no hard shadow. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  min-height: 48px; padding: 0 var(--s6); border-radius: 12px; border: 1px solid transparent;
+  background: var(--accent); color: var(--accent-ink);
+  font: 500 var(--t-body)/1 var(--font-body); text-decoration: none;
+}
+.btn:hover { background: var(--accent-hover); color: var(--accent-ink); }
+.btn.small { min-height: 44px; padding: 0 var(--s4); font-size: var(--t-2); }
+.btn svg { flex: none; }
+
+/* Hero: one promise, one action. */
+.hero { padding: var(--s16) 0 0; }
+.hero-text { max-width: 720px; }
+.eyebrow { font-size: var(--t-2); font-weight: 500; color: var(--accent); margin-bottom: var(--s3); }
+.hero h1 { font-size: clamp(var(--t-h1), 5vw, var(--t-display)); line-height: 1.1; }
+.lede { font-size: var(--t-h4); line-height: 1.5; color: var(--text-2); margin-top: var(--s4); max-width: 60ch; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); margin-top: var(--s8); }
+.hero-art { margin-top: var(--s12); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.hero-art img { width: 100%; }
+
+section { padding-top: var(--s24); }
+.section-head { margin-bottom: var(--s8); }
+.section-head p { color: var(--text-2); margin-top: var(--s2); max-width: 60ch; }
+
+/* Features: hairline-topped columns, not a wall of boxes. */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s8) var(--s8); margin: 0; padding: 0; list-style: none; }
+.features li { border-top: 1px solid var(--border-strong); padding-top: var(--s4); }
+.features p { color: var(--text-2); margin-top: var(--s2); }
+
+/* Screenshot rows */
+.shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); }
+.shots figure, .scenes figure { margin: 0; }
+.shots img, .scenes img { width: 100%; border-radius: 12px; border: 1px solid var(--border); }
+figcaption { color: var(--text-2); font-size: var(--t-2); margin-top: var(--s2); }
+.scenes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6) var(--s4); }
+.scenes .wide { grid-column: 1 / -1; }
+
+/* L1 surfaces: one neutral step up, 1px border, top edge light. */
+.card, .band, .game {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--edge);
+}
+.card { padding: var(--s6); }
+.band { padding: var(--s12) var(--s8); display: flex; align-items: center; justify-content: space-between; gap: var(--s6); flex-wrap: wrap; }
+.band p { color: var(--text-2); margin-top: var(--s2); }
+
+/* Studio: game list */
+.games { display: grid; gap: var(--s6); }
+.game { display: grid; grid-template-columns: 1.25fr 1fr; overflow: hidden; color: inherit; text-decoration: none; }
+.game:hover { border-color: var(--border-strong); color: inherit; }
+.game img { width: 100%; height: 100%; object-fit: cover; }
+.game-body { padding: var(--s8); display: flex; flex-direction: column; justify-content: center; }
+.game-body h3 { font-size: var(--t-h3); }
+.game-body p { color: var(--text-2); margin-top: var(--s3); }
+.game-body .status { font-size: var(--t-2); margin-top: var(--s4); }
+.game-body .more { color: var(--accent); font-weight: 500; margin-top: var(--s6); }
+.game:hover .more { text-decoration: underline; text-underline-offset: 3px; }
+
+.note { color: var(--text-2); font-size: var(--t-2); margin-top: var(--s6); }
+
+.footer { margin-top: var(--s24); border-top: 1px solid var(--border); }
+.footer .wrap { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s6); padding-top: var(--s6); padding-bottom: var(--s12); font-size: var(--t-2); color: var(--text-2); }
+.footer a { color: var(--text-2); }
+.footer a:hover { color: var(--text); }
+.footer span { margin-right: auto; }
+
+/* Quiet Earth: the game's paper tones on its splash brown, Noto Serif throughout. */
+.qe {
+  --bg: #2a2118; --surface: #33281d; --text: #f3ead8; --text-2: #cbbd9f;
+  --accent: #a9cf94; --accent-hover: #c0dfae; --accent-ink: #1d2a16;
+  --border: rgba(243, 234, 216, 0.14); --border-strong: rgba(243, 234, 216, 0.28);
+  --font-body: "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-head: "Noto Serif", Georgia, "Times New Roman", serif;
+  --w-head: 400;
+}
+.story { display: grid; grid-template-columns: 96px 1fr; gap: var(--s8); align-items: start; }
+.story img { border-radius: 20px; }
+.story p + p { margin-top: var(--s4); }
+
+/* Privacy policy (article column) */
+.article { max-width: 68ch; margin: 0 auto; padding: var(--s12) var(--s6) var(--s16); }
+.article header { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s6); }
+.article header img { width: 64px; height: 64px; border-radius: 16px; }
+.article header a { color: inherit; text-decoration: none; }
+.article h1 { font-size: var(--t-h1); }
+.article h2 { font-size: var(--t-h3); margin: var(--s8) 0 var(--s2); }
+.article p, .article ul { margin: 0 0 var(--s4); }
+.article li { margin-bottom: var(--s1); }
+.article table { border-collapse: collapse; width: 100%; margin: var(--s2) 0 var(--s4); font-size: var(--t-2); }
+.article th, .article td { text-align: left; vertical-align: top; padding: var(--s2) var(--s3); border-bottom: 1px solid var(--border); }
+.article th { color: var(--text-2); font-weight: 500; }
+.article .card { margin-bottom: var(--s6); }
+.article .card p { margin: 0; }
+.article footer { margin-top: var(--s12); padding-top: var(--s6); border-top: 1px solid var(--border); font-size: var(--t-2); }
+
+@media (max-width: 900px) {
+  .features { grid-template-columns: repeat(2, 1fr); }
+  .game { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 var(--s4); }
+  .nav-links a:not(.btn) { display: none; }
+  .hero { padding-top: var(--s12); }
+  .hero-art { margin-top: var(--s8); }
+  section { padding-top: var(--s16); }
+  .features { grid-template-columns: 1fr; gap: var(--s6); }
+  .shots { grid-template-columns: repeat(2, 1fr); }
+  .scenes { grid-template-columns: 1fr; }
+  .band { padding: var(--s8) var(--s6); }
+  .game-body { padding: var(--s6); }
+  .story { grid-template-columns: 1fr; gap: var(--s4); }
+  .story img { width: 72px; height: 72px; }
+  .footer { margin-top: var(--s16); }
+  .footer span { width: 100%; }
+}
+strong, b { font-weight: 600; }
