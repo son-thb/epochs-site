@@ -1,0 +1,6 @@
+{"packs": [
+    {"id": "xmas-2026", "starts": "2026-12-15", "ends": "2027-01-06",
+     "url": "https://playepochs.com/events/xmas-2026.pck", "size": 6168156,
+     "sha256": "723a6bdd28c6c476e72784d92d0a873fd47a817132375c5db038b4bbdf04e6e8",
+     "product": "skin_xmas", "minBuild": 13}
+]}
